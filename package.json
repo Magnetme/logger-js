@@ -1,0 +1,12 @@
+{
+  "name": "logger-js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Magnetme/logger-js",
+  "author": "Magnet.me",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "kafka-node": "^5.0.0"
+  }
+}
