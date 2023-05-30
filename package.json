@@ -9,7 +9,7 @@
   "private": false,
   "scripts": {
     "build": "tsc",
-    "prepublish": "yarn run build",
+    "prepare": "yarn run build",
     "format": "prettier src --check --write"
   },
   "dependencies": {

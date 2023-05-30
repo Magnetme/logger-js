@@ -1,4 +1,4 @@
-type Level = "VERBOSE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL";
+export type Level = "VERBOSE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL";
 
 type Scopes = { [key: string]: Level };
 
