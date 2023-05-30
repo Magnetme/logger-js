@@ -1,6 +1,6 @@
-type Level = "VERBOSE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL";
+export type Level = "VERBOSE" | "DEBUG" | "INFO" | "WARN" | "ERROR" | "FATAL";
 
-type Scopes = { [key: string]: Level };
+export type Scopes = { [key: string]: Level };
 
 const levelToValue: { [p in Level]: number } = {
   VERBOSE: 10,
