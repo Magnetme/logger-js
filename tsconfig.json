@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2016",
+    "target": "es3",
     "module": "esnext",
     "moduleResolution": "node",
     "lib": ["es2019"],
     "declaration": true,
-    "outDir": "dist",
+    "outDir": "dist/esm",
     "strict": true,
     "esModuleInterop": true,
     "types": ["node"],
