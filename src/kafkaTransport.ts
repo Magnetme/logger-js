@@ -1,7 +1,7 @@
 import kafka, { KafkaClientOptions } from "kafka-node";
 import { promisify } from "util";
 import toString from "./toString";
-import { LogMessage } from "./index";
+import { LogMessage } from "./logger";
 
 function createKafkaLog(
   { service, instance, host, buildNumber }: Config,
