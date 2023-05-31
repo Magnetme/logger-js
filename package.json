@@ -1,15 +1,17 @@
 {
   "name": "@magnet.me/logger-js",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/esm/index.d.ts",
   "repository": "https://github.com/Magnetme/logger-js",
   "author": "Magnet.me",
   "license": "MIT",
   "private": false,
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+    "clean": "rm -rf dist",
+    "cleanbuild": "yarn run clean && yarn run build",
     "prepublish": "yarn run build",
     "format": "prettier src --check --write"
   },
