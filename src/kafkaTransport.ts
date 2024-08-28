@@ -43,10 +43,17 @@ export default function kafkaLogger(
 
   return {
     log(log: LogMessage) {
-      producer.send(
-        [createKafkaLog({ service, instance, host, buildNumber }, log)],
-        () => {}
-      );
+      try {
+        producer.send(
+            [createKafkaLog({service, instance, host, buildNumber}, log)],
+            () => {
+            }
+        );
+      } catch(e) {
+        // At this point we probably don't have a functioning Kafka logger anymore, so write the error to console instead
+        // eslint-disable-next-line no-console
+        console.error(`Unable to send Kafka log message due to ${e}`, {service, instance, host, buildNumber}, log);
+      }
     },
     async close() {
       try {
