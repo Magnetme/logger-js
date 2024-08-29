@@ -1,22 +1,26 @@
 {
-  "name": "@magnet.me/logger-js",
-  "version": "1.0.4",
+  "name": "@magnet.me/console-transport",
+  "version": "2.0.1",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
-  "repository": "https://github.com/Magnetme/logger-js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Magnetme/logger-js.git"
+  },
   "author": "Magnet.me",
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+    "build": "tsc -p ./tsconfig.json && tsc -p ./tsconfig-cjs.json",
     "clean": "rm -rf dist",
     "cleanbuild": "yarn run clean && yarn run build",
-    "prepublish": "yarn run build",
+    "prepublish": "yarn run format:ci && yarn run build",
+    "format:ci": "prettier src --check",
     "format": "prettier src --check --write"
   },
   "dependencies": {
-    "kafka-node": "^5.0.0"
+    "@magnet.me/logger-js": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

@@ -1,4 +1,4 @@
-export default function toString(message: unknown) {
+export default function toString(message: unknown): string {
   if (typeof message === "string") {
     return message;
   }

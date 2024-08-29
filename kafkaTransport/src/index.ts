@@ -1,7 +1,7 @@
 import kafka, { KafkaClientOptions } from "kafka-node";
+import { LogMessage, Logger } from "@magnet.me/logger-js";
 import { promisify } from "util";
 import toString from "./toString";
-import { LogMessage } from "./logger";
 
 function createKafkaLog(
   { service, instance, host, buildNumber }: Config,
@@ -32,10 +32,15 @@ type Config = {
   buildNumber: number;
 };
 
-export default function kafkaLogger(
+type KafkaTransport = {
+  log: Logger;
+  close: () => Promise<void>;
+};
+
+export default function kafkaTransport(
   { service, instance, host, buildNumber }: Config,
   kafkaProperties: KafkaClientOptions
-) {
+): KafkaTransport {
   const client = new kafka.KafkaClient(kafkaProperties);
 
   const producer = new kafka.Producer(client);
@@ -45,14 +50,17 @@ export default function kafkaLogger(
     log(log: LogMessage) {
       try {
         producer.send(
-            [createKafkaLog({service, instance, host, buildNumber}, log)],
-            () => {
-            }
+          [createKafkaLog({ service, instance, host, buildNumber }, log)],
+          () => {}
         );
-      } catch(e) {
+      } catch (e) {
         // At this point we probably don't have a functioning Kafka logger anymore, so write the error to console instead
         // eslint-disable-next-line no-console
-        console.error(`Unable to send Kafka log message due to ${e}`, {service, instance, host, buildNumber}, log);
+        console.error(
+          `Unable to send Kafka log message due to ${e}`,
+          { service, instance, host, buildNumber },
+          log
+        );
       }
     },
     async close() {

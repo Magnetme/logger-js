@@ -1,0 +1,30 @@
+{
+  "name": "@magnet.me/kafka-transport",
+  "version": "2.0.2",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Magnetme/logger-js.git"
+  },
+  "author": "Magnet.me",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json && tsc -p ./tsconfig-cjs.json",
+    "clean": "rm -rf dist",
+    "cleanbuild": "yarn run clean && yarn run build",
+    "prepublish": "yarn run format:ci && yarn run build",
+    "format:ci": "prettier src --check",
+    "format": "prettier src --check --write"
+  },
+  "dependencies": {
+    "@magnet.me/logger-js": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "prettier": "^2.8.3",
+    "typescript": "^4.9.5"
+  }
+}

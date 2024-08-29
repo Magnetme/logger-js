@@ -17,9 +17,9 @@ export type LogMessage = {
   args: Array<unknown>;
 };
 
-export type Logger = (message: LogMessage) => void;
+export type Transport = (message: LogMessage) => void;
 
-const transports: Array<Logger> = [];
+const transports: Array<Transport> = [];
 
 function shouldLog(
   logMessage: LogMessage,
@@ -30,9 +30,20 @@ function shouldLog(
   return levelToValue[logMessage.level] >= levelToValue[threshold];
 }
 
+type LogFunction = (...args: Array<unknown>) => void;
+
+type Logger = {
+  verbose: LogFunction;
+  debug: LogFunction;
+  info: LogFunction;
+  warn: LogFunction;
+  error: LogFunction;
+  fatal: LogFunction;
+};
+
 export function registerLogTransport(
   minLevel: Level,
-  logger: Logger,
+  logger: Transport,
   scopeThresholds: Scopes = {}
 ) {
   transports.push((logMessage) => {
@@ -46,7 +57,7 @@ function log(message: LogMessage) {
   transports.forEach((logger) => logger(message));
 }
 
-export default (scope: string) => ({
+export default (scope: string): Logger => ({
   verbose(...args: Array<unknown>) {
     log({
       level: "VERBOSE",

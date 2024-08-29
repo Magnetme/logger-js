@@ -5,14 +5,9 @@
     "moduleResolution": "node",
     "lib": ["es2019"],
     "declaration": true,
-    "outDir": "dist/esm",
     "strict": true,
     "esModuleInterop": true,
     "types": ["node"],
     "skipLibCheck": true
-  },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  }
 }

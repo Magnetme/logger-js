@@ -1,10 +1,10 @@
-import { LogMessage } from "./";
+import { LogMessage, Transport } from "@magnet.me/logger-js";
 
 function logPrefix(message: LogMessage) {
   return `${new Date().toISOString()} [${message.scope}] ${message.level}:`;
 }
 
-export default (message: LogMessage) => {
+const consoleTransport: Transport = (message: LogMessage) => {
   switch (message.level) {
     case "VERBOSE":
       console.info(logPrefix(message), ...message.args);
@@ -29,3 +29,5 @@ export default (message: LogMessage) => {
       break;
   }
 };
+
+export default consoleTransport;
