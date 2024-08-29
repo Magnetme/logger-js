@@ -25,14 +25,14 @@ function createKafkaLog(
   };
 }
 
-type Config = {
+export type Config = {
   service: string;
   instance: string;
   host: string;
   buildNumber: number;
 };
 
-type KafkaTransport = {
+export type KafkaTransport = {
   log: Logger;
   close: () => Promise<void>;
 };
