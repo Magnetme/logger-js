@@ -43,15 +43,33 @@ export default function kafkaTransport(
 ): KafkaTransport {
   const client = new kafka.KafkaClient(kafkaProperties);
 
+  let closed = false;
+
   const producer = new kafka.Producer(client);
-  const close = promisify(producer.close);
+  const close = promisify(producer.close).bind(producer);
+  const send = promisify(producer.send).bind(producer);
+
+  const outstandingMessages = new Set<Promise<unknown>>();
 
   return {
     log(log: LogMessage) {
       try {
-        producer.send(
-          [createKafkaLog({ service, instance, host, buildNumber }, log)],
-          () => {}
+        if (closed) {
+          // eslint-disable-next-line no-console
+          console.warn(
+            "Not sending message because producer is closed",
+            { service, instance, host, buildNumber },
+            log
+          );
+          return;
+        }
+        const messagePromise = send([
+          createKafkaLog({ service, instance, host, buildNumber }, log),
+        ]);
+        outstandingMessages.add(messagePromise);
+        messagePromise.then(
+          () => outstandingMessages.delete(messagePromise),
+          () => outstandingMessages.delete(messagePromise)
         );
       } catch (e) {
         // At this point we probably don't have a functioning Kafka logger anymore, so write the error to console instead
@@ -65,8 +83,10 @@ export default function kafkaTransport(
     },
     async close() {
       try {
+        closed = true;
+        await Promise.all([...outstandingMessages]);
         // Use apply to ensure proper this context
-        await close.apply(producer);
+        await close();
       } catch (e) {
         // At this point we probably don't have a functioning Kafka logger anymore, so write the error to console instead
         // eslint-disable-next-line no-console
