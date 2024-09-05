@@ -1,5 +1,5 @@
 import kafka, { KafkaClientOptions } from "kafka-node";
-import { LogMessage, Logger } from "@magnet.me/logger-js";
+import { LogMessage, Transport } from "@magnet.me/logger-js";
 import { promisify } from "util";
 import toString from "./toString";
 
@@ -33,7 +33,7 @@ export type Config = {
 };
 
 export type KafkaTransport = {
-  log: Logger;
+  log: Transport;
   close: () => Promise<void>;
 };
 
