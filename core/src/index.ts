@@ -19,7 +19,10 @@ export type LogMessage = {
 
 export type Transport = (message: LogMessage) => void;
 
-const transports: Array<Transport> = [];
+const transports: Array<{
+  logger: Transport;
+  filters: Array<(message: LogMessage) => boolean>;
+}> = [];
 
 function shouldLog(
   logMessage: LogMessage,
@@ -46,15 +49,26 @@ export function registerLogTransport(
   logger: Transport,
   scopeThresholds: Scopes = {}
 ) {
-  transports.push((logMessage) => {
-    if (shouldLog(logMessage, minLevel, scopeThresholds)) {
-      logger(logMessage);
-    }
-  });
+  const existing = transports.find(({ logger: e }) => e === logger);
+  if (existing) {
+    // Extend the filter
+    existing.filters.push((logMessage) =>
+      shouldLog(logMessage, minLevel, scopeThresholds)
+    );
+  } else {
+    transports.push({
+      logger,
+      filters: [
+        (logMessage) => shouldLog(logMessage, minLevel, scopeThresholds),
+      ],
+    });
+  }
 }
 
 function log(message: LogMessage) {
-  transports.forEach((logger) => logger(message));
+  transports
+    .filter(({ filters }) => filters.some((filter) => filter(message)))
+    .forEach(({ logger }) => logger(message));
 }
 
 export default (scope: string): Logger => ({
