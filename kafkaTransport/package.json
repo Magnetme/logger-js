@@ -1,6 +1,6 @@
 {
   "name": "@magnet.me/kafka-transport",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
