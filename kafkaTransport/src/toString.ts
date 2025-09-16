@@ -1,10 +1,16 @@
+import { isErrorLike, serializeError } from "serialize-error";
+
 export default function toString(message: unknown): string {
   if (typeof message === "string") {
     return message;
   }
 
-  if (message instanceof Error) {
-    return message.stack || message.toString();
+  if (isErrorLike(message)) {
+    try {
+      message = serializeError(message);
+    } catch (e) {
+      // We don't want to throw or error here, so simply continue and let the handlers below try to fix it
+    }
   }
   try {
     const result = JSON.stringify(message, null, 4);
