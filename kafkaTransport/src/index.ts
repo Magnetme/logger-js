@@ -1,12 +1,11 @@
-import kafka, { KafkaClientOptions } from "kafka-node";
+import { Kafka, KafkaConfig, ProducerRecord, Partitioners } from "kafkajs";
 import { LogMessage, Transport } from "@magnet.me/logger-js";
-import { promisify } from "util";
 import toString from "./toString";
 
 function createKafkaLog(
   { service, instance, host, buildNumber }: Config,
   log: LogMessage
-) {
+): ProducerRecord {
   const message = {
     "@version": 1,
     "@timestamp": new Date().toISOString(),
@@ -21,7 +20,11 @@ function createKafkaLog(
 
   return {
     topic: "logs",
-    messages: JSON.stringify(message),
+    messages: [
+      {
+        value: JSON.stringify(message),
+      },
+    ],
   };
 }
 
@@ -37,17 +40,19 @@ export type KafkaTransport = {
   close: () => Promise<void>;
 };
 
-export default function kafkaTransport(
+export default async function kafkaTransport(
   { service, instance, host, buildNumber }: Config,
-  kafkaProperties: KafkaClientOptions
-): KafkaTransport {
-  const client = new kafka.KafkaClient(kafkaProperties);
+  kafkaProperties: KafkaConfig
+): Promise<KafkaTransport> {
+  console.log(kafkaProperties);
+  const client = new Kafka(kafkaProperties);
 
   let closed = false;
 
-  const producer = new kafka.Producer(client);
-  const close = promisify(producer.close).bind(producer);
-  const send = promisify(producer.send).bind(producer);
+  const producer = client.producer({
+    createPartitioner: Partitioners.DefaultPartitioner,
+  });
+  await producer.connect();
 
   const outstandingMessages = new Set<Promise<unknown>>();
 
@@ -63,9 +68,9 @@ export default function kafkaTransport(
           );
           return;
         }
-        const messagePromise = send([
-          createKafkaLog({ service, instance, host, buildNumber }, log),
-        ]);
+        const messagePromise = producer.send(
+          createKafkaLog({ service, instance, host, buildNumber }, log)
+        );
         outstandingMessages.add(messagePromise);
         messagePromise.then(
           () => outstandingMessages.delete(messagePromise),
@@ -85,8 +90,7 @@ export default function kafkaTransport(
       try {
         closed = true;
         await Promise.all([...outstandingMessages]);
-        // Use apply to ensure proper this context
-        await close();
+        await producer.disconnect();
       } catch (e) {
         // At this point we probably don't have a functioning Kafka logger anymore, so write the error to console instead
         // eslint-disable-next-line no-console
