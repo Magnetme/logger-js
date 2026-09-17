@@ -15,7 +15,29 @@ export type LogMessage = {
   level: Level;
   scope: string;
   args: Array<unknown>;
+  fields?: Record<string, unknown>;
 };
+
+export class Markers {
+  private constructor(
+    public readonly fields: Readonly<Record<string, unknown>>
+  ) {}
+
+  static of(fields: Record<string, unknown>): Markers {
+    return new Markers(
+      Object.freeze(
+        Object.fromEntries(
+          Object.entries(fields).filter(
+            ([key]) =>
+              key !== "__proto__" &&
+              key !== "constructor" &&
+              key !== "prototype"
+          )
+        )
+      )
+    );
+  }
+}
 
 export type Transport = (message: LogMessage) => void;
 
@@ -66,6 +88,16 @@ export function registerLogTransport(
 }
 
 function log(message: LogMessage) {
+  const markers = message.args.filter(
+    (arg): arg is Markers => arg instanceof Markers
+  );
+  if (markers.length > 0) {
+    message = {
+      ...message,
+      args: message.args.filter((arg) => !(arg instanceof Markers)),
+      fields: Object.assign({}, ...markers.map((marker) => marker.fields)),
+    };
+  }
   transports
     .filter(({ filters }) => filters.some((filter) => filter(message)))
     .forEach(({ logger }) => logger(message));
