@@ -7,6 +7,7 @@ function createKafkaLog(
   log: LogMessage
 ): ProducerRecord {
   const message = {
+    ...log.fields,
     "@version": 1,
     "@timestamp": new Date().toISOString(),
     logger_name: log.scope,
