@@ -1,10 +1,12 @@
 {
   "name": "@magnet.me/logger-js",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
-  "repository": "https://github.com/Magnetme/logger-js",
+  "repository": {
+    "url": "https://github.com/Magnetme/logger-js"
+  },
   "author": "Magnet.me",
   "license": "MIT",
   "private": false,
