@@ -1,0 +1,132 @@
+{
+  "topic_number": 2,
+  "topic_title": "Authentication",
+  "status": "complete",
+  "review_date": "2026-10-26",
+  "base_commit": "48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c",
+  "worktree": "/home/alex/.codex/worktrees/b0b1/logger-js",
+  "branches": ["codex/security-review-20261026-02-authentication"],
+  "findings": [
+    {
+      "id": "AUTH-01",
+      "title": "Kafka startup prints authentication configuration to stdout",
+      "status": "fixed",
+      "cwe": ["CWE-532", "CWE-522"],
+      "severity": "high potential impact; requires log access and usable broker credentials",
+      "source_at_base": "kafkaTransport/src/index.ts:48",
+      "demonstrated_disclosures": [
+        "SASL PLAIN password",
+        "SASL SCRAM-SHA-256 password",
+        "SASL SCRAM-SHA-512 password",
+        "TLS private key, passphrase and PFX bytes",
+        "Custom authentication provider options"
+      ],
+      "impact_limit": "Synthetic output disclosure confirmed. No production exposure or credential reuse tested.",
+      "fix": "Remove the configuration console.log; preserve the original KafkaConfig object passed to KafkaJS.",
+      "regression_failures_before": 5,
+      "legitimate_controls_passed_before": 2,
+      "tests_passed_after": 7,
+      "regression_evidence": "security-review/evidence/02-authentication/regression-before.log",
+      "fix_evidence": "security-review/evidence/02-authentication/regression-after.log"
+    }
+  ],
+  "duplicates": [],
+  "duplicate_handoff": [
+    {
+      "topic": 6,
+      "finding": "AUTH-01",
+      "instruction": "Reference this finding if reviewing the same KafkaConfig startup dump; do not count it twice."
+    }
+  ],
+  "coverage": [
+    "Every tracked production source file in core, consoleTransport and kafkaTransport",
+    "Caller input to scopes, arguments and markers, transport registration, event construction and output",
+    "KafkaConfig credential flow, initialization failure, send and close boundaries",
+    "Pinned KafkaJS 2.2.4 configuration types, SASL connection/authenticator interfaces, PLAIN failure and TLS socket forwarding",
+    "All package manifests, lockfiles, compiler configurations, README, .nvmrc and tracked infrastructure inventory"
+  ],
+  "coverage_gaps": [
+    "Consuming services, login/session/password reset/MFA implementations and their configurations are absent.",
+    "Broker security configuration, ACLs, TLS deployment and network exposure are absent.",
+    "Production log access, retention, historical exposure and credential reuse were not inspected.",
+    "No live broker handshake or certificate-validation test; dependency source was traced and the wrapper was exercised with an isolated fake Kafka client.",
+    "Node 18.14.0 requested by .nvmrc was not exercised; tests ran on Node 24.8.0."
+  ],
+  "rejected_suspicions": [
+    "No login/session/authentication endpoint exists in this library.",
+    "No wrapper fallback to an anonymous connection after an authentication rejection.",
+    "Optional SASL/TLS settings alone do not prove a deployment authentication bypass.",
+    "Log content and marker fields do not become Kafka connection credentials.",
+    "OAuth callback return tokens are not demonstrated to leak merely by inspecting the callback function."
+  ],
+  "test_commits": ["7f0c562feaf1bc516d6ab2af4cfad56cb76ef9f9"],
+  "fix_commits": ["856b0dfab987047b2a9407fdfc1cddc311f51750"],
+  "report_commit": "b0961433c444f448a16d25c82af23bbf66ab2b04",
+  "report_path": "security-review/02-authentication.md",
+  "checks": [
+    {
+      "command": "git rev-parse HEAD (before edits)",
+      "outcome": "Matched shared base 48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c; worktree initially clean."
+    },
+    {
+      "command": "yarn install --frozen-lockfile --ignore-scripts --non-interactive --cache-folder /tmp/logger-js-authentication-yarn-cache --registry https://registry.npmjs.org (in each package)",
+      "outcome": "Passed; lockfiles unchanged. Earlier default-cache/registry attempts failed integrity checks; no checksums were bypassed."
+    },
+    {
+      "command": "cd kafkaTransport && yarn test (unchanged production implementation)",
+      "outcome": "Expected exit 1: five credential-output assertion failures, two controls passed; builds and fixtures worked.",
+      "evidence_path": "security-review/evidence/02-authentication/regression-before.log"
+    },
+    {
+      "command": "git diff 7f0c562^ 7f0c562 -- kafkaTransport/src",
+      "outcome": "Empty: regression commit did not change production source."
+    },
+    {
+      "command": "cd kafkaTransport && yarn test (after fix)",
+      "outcome": "Exit 0: all seven tests pass.",
+      "evidence_path": "security-review/evidence/02-authentication/regression-after.log"
+    },
+    {
+      "command": "cd core && yarn run build && yarn run format:ci",
+      "outcome": "Exit 0.",
+      "evidence_path": "security-review/evidence/02-authentication/core-checks.log"
+    },
+    {
+      "command": "cd consoleTransport && yarn run build && yarn run format:ci",
+      "outcome": "Exit 0.",
+      "evidence_path": "security-review/evidence/02-authentication/consoleTransport-checks.log"
+    },
+    {
+      "command": "cd kafkaTransport && yarn run build && yarn run format:ci",
+      "outcome": "Exit 0.",
+      "evidence_path": "security-review/evidence/02-authentication/kafkaTransport-checks.log"
+    },
+    {
+      "command": "node kafkaTransport/node_modules/prettier/bin-prettier.js --check kafkaTransport/test/authentication.test.cjs",
+      "outcome": "Exit 0.",
+      "evidence_path": "security-review/evidence/02-authentication/test-format.log"
+    },
+    {
+      "command": "git diff --check",
+      "outcome": "Exit 0."
+    },
+    {
+      "command": "git push -u origin codex/security-review-20261026-02-authentication; git ls-remote --exit-code origin refs/heads/codex/security-review-20261026-02-authentication",
+      "outcome": "Push and remote equality check passed through per-command escalation after sandbox SSH proxy permissions failure.",
+      "evidence_path": "security-review/evidence/02-authentication/push-report.log"
+    }
+  ],
+  "pushed_tips": [
+    {
+      "remote": "origin",
+      "branch": "codex/security-review-20261026-02-authentication",
+      "commit": "b0961433c444f448a16d25c82af23bbf66ab2b04",
+      "verified": true,
+      "scope": "Report, regression and fix commits; verified before this result metadata commit.",
+      "evidence_path": "security-review/evidence/02-authentication/push-report.log"
+    }
+  ],
+  "metadata_delivery_verification": "The final chat response records the final metadata commit SHA and its remote equality check, avoiding a self-referencing commit hash in this file.",
+  "prs": [],
+  "blockers": []
+}
