@@ -1,0 +1,25 @@
+yarn run v1.22.19
+warning Skipping preferred cache folder "/home/alex/.cache/yarn" because it is not writable.
+warning Selected the next writable cache folder in the list, will be "/tmp/.yarn-cache-1000".
+$ yarn run build && node --test test/*.test.cjs
+warning Cannot find a suitable global folder. Tried these: "/usr/local, /home/alex/.yarn"
+warning Skipping preferred cache folder "/home/alex/.cache/yarn" because it is not writable.
+warning Selected the next writable cache folder in the list, will be "/tmp/.yarn-cache-1000".
+$ tsc -p ./tsconfig.json && tsc -p ./tsconfig-cjs.json
+warning Cannot find a suitable global folder. Tried these: "/usr/local, /home/alex/.yarn"
+✔ keeps plain credentials out of console output (18.381494ms)
+✔ keeps scram-sha-256 credentials out of console output (0.415023ms)
+✔ keeps scram-sha-512 credentials out of console output (0.693164ms)
+✔ keeps TLS private key, passphrase and PFX data out of console output (0.397192ms)
+✔ keeps custom authentication provider options out of console output (0.407743ms)
+✔ preserves OAuth/TLS settings and ordinary log delivery (0.628974ms)
+✔ propagates a rejected authenticated connection without retrying anonymously (0.578593ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 46.4456
+Done in 0.82s.

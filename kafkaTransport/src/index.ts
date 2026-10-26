@@ -45,7 +45,6 @@ export default async function kafkaTransport(
   { service, instance, host, buildNumber }: Config,
   kafkaProperties: KafkaConfig
 ): Promise<KafkaTransport> {
-  console.log(kafkaProperties);
   const client = new Kafka(kafkaProperties);
 
   let closed = false;
