@@ -1,0 +1,6 @@
+yarn run v1.22.19
+warning Skipping preferred cache folder "/home/alex/.cache/yarn" because it is not writable.
+warning Selected the next writable cache folder in the list, will be "/tmp/.yarn-cache-1000".
+$ tsc -p ./tsconfig.json && tsc -p ./tsconfig-cjs.json
+warning Cannot find a suitable global folder. Tried these: "/usr/local, /home/alex/.yarn"
+Done in 0.54s.

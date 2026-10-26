@@ -1,0 +1,50 @@
+Reviewed base: 48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c
+Branch: codex/security-review-20261026-01-sql-injection
+Node: v24.8.0
+Tracked base files:
+.gitignore
+.nvmrc
+README.md
+base-tsconfig.json
+consoleTransport/package.json
+consoleTransport/src/index.ts
+consoleTransport/tsconfig-cjs.json
+consoleTransport/tsconfig.json
+consoleTransport/yarn.lock
+core/package.json
+core/src/index.ts
+core/tsconfig-cjs.json
+core/tsconfig.json
+core/yarn.lock
+kafkaTransport/package.json
+kafkaTransport/src/index.ts
+kafkaTransport/src/toString.ts
+kafkaTransport/tsconfig-cjs.json
+kafkaTransport/tsconfig.json
+kafkaTransport/yarn.lock
+
+Search command: git grep -n -i -E "sql|query|execute|sequelize|knex|prisma|typeorm|postgres|mysql|sqlite|mssql|oracle|jdbc|odbc|clickhouse|snowflake|database" 48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c --
+Search exit: 1 (1 = no matches; this is corroboration, not the basis of the conclusion)
+
+core runtime declarations: {}
+core @types/node installed version 18.19.47
+core prettier installed version 2.8.8
+core typescript installed version 4.9.5
+core compiled runtime imports:
+consoleTransport runtime declarations: {"@magnet.me/logger-js":"^2.0.0"}
+consoleTransport @magnet.me/logger-js installed version 2.0.0
+consoleTransport @types/node installed version 18.19.47
+consoleTransport prettier installed version 2.8.8
+consoleTransport typescript installed version 4.9.5
+consoleTransport compiled runtime imports:
+kafkaTransport runtime declarations: {"@magnet.me/logger-js":"^2.3.0","kafkajs":"^2.2.4","serialize-error":"^12.0.0"}
+kafkaTransport @magnet.me/logger-js installed version 2.3.0
+kafkaTransport kafkajs installed version 2.2.4
+kafkaTransport serialize-error installed version 12.0.0
+kafkaTransport @types/node installed version 18.19.47
+kafkaTransport prettier installed version 2.8.8
+kafkaTransport typescript installed version 4.9.5
+kafkaTransport compiled runtime imports:
+index.js:15 const kafkajs_1 = require("kafkajs");
+index.js:16 const toString_1 = __importDefault(require("./toString"));
+toString.js:3 const serialize_error_1 = require("serialize-error");

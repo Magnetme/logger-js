@@ -1,0 +1,7 @@
+{"input":"' OR 1=1 --","sink":"console and Kafka record data","kafkaTopic":"logs"}
+{"input":"x'); DROP TABLE synthetic_table; --","sink":"console and Kafka record data","kafkaTopic":"logs"}
+{"input":"'; SELECT pg_sleep(1); --","sink":"console and Kafka record data","kafkaTopic":"logs"}
+{"input":"ordinary text","sink":"console and Kafka record data","kafkaTopic":"logs"}
+{"input":"O'Reilly","sink":"console and Kafka record data","kafkaTopic":"logs"}
+{"input":"SELECT id FROM synthetic_table WHERE id = $1","sink":"console and Kafka record data","kafkaTopic":"logs"}
+PASS: six SQL-shaped/legitimate inputs preserved as data; metadata precedence and close verified. Kafka producer substituted; no downstream consumer or database tested.
