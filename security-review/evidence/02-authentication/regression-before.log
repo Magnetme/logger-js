@@ -1,0 +1,153 @@
+yarn run v1.22.19
+warning Skipping preferred cache folder "/home/alex/.cache/yarn" because it is not writable.
+warning Selected the next writable cache folder in the list, will be "/tmp/.yarn-cache-1000".
+$ yarn run build && node --test test/*.test.cjs
+warning Cannot find a suitable global folder. Tried these: "/usr/local, /home/alex/.yarn"
+warning Skipping preferred cache folder "/home/alex/.cache/yarn" because it is not writable.
+warning Selected the next writable cache folder in the list, will be "/tmp/.yarn-cache-1000".
+$ tsc -p ./tsconfig.json && tsc -p ./tsconfig-cjs.json
+warning Cannot find a suitable global folder. Tried these: "/usr/local, /home/alex/.yarn"
+✖ keeps plain credentials out of console output (18.503325ms)
+✖ keeps scram-sha-256 credentials out of console output (0.841116ms)
+✖ keeps scram-sha-512 credentials out of console output (0.521363ms)
+✖ keeps TLS private key, passphrase and PFX data out of console output (0.699345ms)
+✖ keeps custom authentication provider options out of console output (0.520703ms)
+✔ preserves OAuth/TLS settings and ordinary log delivery (0.746315ms)
+✔ propagates a rejected authenticated connection without retrying anonymously (0.632194ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 2
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 47.762768
+
+✖ failing tests:
+
+test at test/authentication.test.cjs:67:3
+✖ keeps plain credentials out of console output (18.503325ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /synthetic-password-never-log/. Input:
+  
+  '{\n' +
+    "  brokers: [ 'synthetic.invalid:9093' ],\n" +
+    '  ssl: true,\n' +
+    '  sasl: {\n' +
+    "    mechanism: 'plain',\n" +
+    "    username: 'synthetic-user',\n" +
+    "    password: 'synthetic-password-never-log'\n" +
+    '  }\n' +
+    '}'
+  
+      at TestContext.<anonymous> (/home/alex/.codex/worktrees/b0b1/logger-js/kafkaTransport/test/authentication.test.cjs:83:12)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "{\n  brokers: [ 'synthetic.invalid:9093' ],\n  ssl: true,\n  sasl: {\n    mechanism: 'plain',\n    username: 'synthetic-user',\n    password: 'synthetic-password-never-log'\n  }\n}",
+    expected: /synthetic-password-never-log/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test/authentication.test.cjs:67:3
+✖ keeps scram-sha-256 credentials out of console output (0.841116ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /synthetic-password-never-log/. Input:
+  
+  '{\n' +
+    "  brokers: [ 'synthetic.invalid:9093' ],\n" +
+    '  ssl: true,\n' +
+    '  sasl: {\n' +
+    "    mechanism: 'scram-sha-256',\n" +
+    "    username: 'synthetic-user',\n" +
+    "    password: 'synthetic-password-never-log'\n" +
+    '  }\n' +
+    '}'
+  
+      at TestContext.<anonymous> (/home/alex/.codex/worktrees/b0b1/logger-js/kafkaTransport/test/authentication.test.cjs:83:12)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "{\n  brokers: [ 'synthetic.invalid:9093' ],\n  ssl: true,\n  sasl: {\n    mechanism: 'scram-sha-256',\n    username: 'synthetic-user',\n    password: 'synthetic-password-never-log'\n  }\n}",
+    expected: /synthetic-password-never-log/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test/authentication.test.cjs:67:3
+✖ keeps scram-sha-512 credentials out of console output (0.521363ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /synthetic-password-never-log/. Input:
+  
+  '{\n' +
+    "  brokers: [ 'synthetic.invalid:9093' ],\n" +
+    '  ssl: true,\n' +
+    '  sasl: {\n' +
+    "    mechanism: 'scram-sha-512',\n" +
+    "    username: 'synthetic-user',\n" +
+    "    password: 'synthetic-password-never-log'\n" +
+    '  }\n' +
+    '}'
+  
+      at TestContext.<anonymous> (/home/alex/.codex/worktrees/b0b1/logger-js/kafkaTransport/test/authentication.test.cjs:83:12)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "{\n  brokers: [ 'synthetic.invalid:9093' ],\n  ssl: true,\n  sasl: {\n    mechanism: 'scram-sha-512',\n    username: 'synthetic-user',\n    password: 'synthetic-password-never-log'\n  }\n}",
+    expected: /synthetic-password-never-log/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at test/authentication.test.cjs:87:1
+✖ keeps TLS private key, passphrase and PFX data out of console output (0.699345ms)
+  AssertionError [ERR_ASSERTION]: {
+    brokers: [ 'synthetic.invalid:9093' ],
+    ssl: {
+      key: 'synthetic-private-key-never-log',
+      passphrase: 'synthetic-passphrase-never-log',
+      pfx: <Buffer 73 79 6e 74 68 65 74 69 63 2d 70 66 78 2d 6e 65 76 65 72 2d 6c 6f 67>,
+      rejectUnauthorized: true
+    }
+  }
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (/home/alex/.codex/worktrees/b0b1/logger-js/kafkaTransport/test/authentication.test.cjs:101:10)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/authentication.test.cjs:104:1
+✖ keeps custom authentication provider options out of console output (0.520703ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /synthetic-provider-secret-never-log/. Input:
+  
+  '{\n' +
+    "  brokers: [ 'synthetic.invalid:9093' ],\n" +
+    '  ssl: true,\n' +
+    '  sasl: {\n' +
+    "    mechanism: 'custom',\n" +
+    '    authenticationProvider: [Function: authenticationProvider],\n' +
+    "    providerSecret: 'synthetic-provider-secret-never-log'\n" +
+    '  }\n' +
+    '}'
+  
+      at TestContext.<anonymous> (/home/alex/.codex/worktrees/b0b1/logger-js/kafkaTransport/test/authentication.test.cjs:118:10)
+      at async Test.run (node:internal/test_runner/test:1113:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:788:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "{\n  brokers: [ 'synthetic.invalid:9093' ],\n  ssl: true,\n  sasl: {\n    mechanism: 'custom',\n    authenticationProvider: [Function: authenticationProvider],\n    providerSecret: 'synthetic-provider-secret-never-log'\n  }\n}",
+    expected: /synthetic-provider-secret-never-log/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
