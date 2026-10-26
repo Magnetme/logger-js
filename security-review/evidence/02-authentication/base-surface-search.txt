@@ -1,0 +1,49 @@
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:README.md:5:It provides ways to set up scoped loggers, which can then write to one or more central transports.
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:README.md:6:Each transport can configure the log thresholds separately, and even scope these per log message scope. 
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:README.md:7:Additionally, provides a console transport as well as a Kafka transport to hook into the framework.
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:README.md:8:Additional transports should be created and hooked into the framework separately.
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:README.md:28:The Kafka transport adds marker fields to the event root; its standard fields,
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:README.md:29:such as `message`, `level` and `service`, take precedence. Other transports may
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:consoleTransport/package.json:2:  "name": "@magnet.me/console-transport",
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:consoleTransport/package.json:11:  "author": "Magnet.me",
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:consoleTransport/src/index.ts:1:import { LogMessage, Transport } from "@magnet.me/logger-js";
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:consoleTransport/src/index.ts:7:const consoleTransport: Transport = (message: LogMessage) => {
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:consoleTransport/src/index.ts:10:      console.info(logPrefix(message), ...message.args);
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:consoleTransport/src/index.ts:13:      console.info(logPrefix(message), ...message.args);
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:consoleTransport/src/index.ts:16:      console.info(logPrefix(message), ...message.args);
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:consoleTransport/src/index.ts:19:      console.warn(logPrefix(message), ...message.args);
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:consoleTransport/src/index.ts:22:      console.error(logPrefix(message), ...message.args);
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:consoleTransport/src/index.ts:25:      console.error(logPrefix(message), ...message.args);
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:consoleTransport/src/index.ts:33:export default consoleTransport;
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:core/package.json:10:  "author": "Magnet.me",
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:core/src/index.ts:42:export type Transport = (message: LogMessage) => void;
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:core/src/index.ts:44:const transports: Array<{
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:core/src/index.ts:45:  logger: Transport;
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:core/src/index.ts:69:export function registerLogTransport(
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:core/src/index.ts:71:  logger: Transport,
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:core/src/index.ts:74:  const existing = transports.find(({ logger: e }) => e === logger);
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:core/src/index.ts:81:    transports.push({
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:core/src/index.ts:101:  transports
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/package.json:2:  "name": "@magnet.me/kafka-transport",
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/package.json:11:  "author": "Magnet.me",
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/package.json:24:    "kafkajs": "^2.2.4",
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:1:import { Kafka, KafkaConfig, ProducerRecord, Partitioners } from "kafkajs";
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:2:import { LogMessage, Transport } from "@magnet.me/logger-js";
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:5:function createKafkaLog(
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:39:export type KafkaTransport = {
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:40:  log: Transport;
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:44:export default async function kafkaTransport(
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:46:  kafkaProperties: KafkaConfig
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:47:): Promise<KafkaTransport> {
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:48:  console.log(kafkaProperties);
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:49:  const client = new Kafka(kafkaProperties);
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:64:          // eslint-disable-next-line no-console
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:65:          console.warn(
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:73:          createKafkaLog({ service, instance, host, buildNumber }, log)
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:81:        // At this point we probably don't have a functioning Kafka logger anymore, so write the error to console instead
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:82:        // eslint-disable-next-line no-console
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:83:        console.error(
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:84:          `Unable to send Kafka log message due to ${e}`,
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:96:        // At this point we probably don't have a functioning Kafka logger anymore, so write the error to console instead
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:97:        // eslint-disable-next-line no-console
+48fcb211c01bfd0fea4bf3d0e4e6fbd8d0b5bc0c:kafkaTransport/src/index.ts:98:        console.error(`Unable to close Kafka logger ${e}`);
