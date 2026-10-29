@@ -51,7 +51,12 @@ function shouldLog(
   minLevel: Level,
   scopeThresholds: Scopes
 ) {
-  const threshold = scopeThresholds[logMessage.scope] || minLevel;
+  const threshold = Object.prototype.hasOwnProperty.call(
+    scopeThresholds,
+    logMessage.scope
+  )
+    ? scopeThresholds[logMessage.scope] || minLevel
+    : minLevel;
   return levelToValue[logMessage.level] >= levelToValue[threshold];
 }
 
