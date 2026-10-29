@@ -12,6 +12,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "test": "yarn run build && node --test test/*.test.cjs",
     "build": "tsc -p ./tsconfig.json && tsc -p ./tsconfig-cjs.json",
     "clean": "rm -rf dist",
     "cleanbuild": "yarn run clean && yarn run build",
